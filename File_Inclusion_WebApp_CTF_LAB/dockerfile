@@ -1,0 +1,20 @@
+# Use the official PHP image with Apache
+FROM php:7.4-apache
+
+# Install necessary dependencies for PHP (e.g., for file inclusion)
+RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev
+
+# Enable Apache mod_rewrite for potential URL rewrites (useful for more complex applications)
+RUN a2enmod rewrite
+
+# Copy the TravelEasy app to the Apache document root
+COPY php.ini /usr/local/etc/php/
+COPY WebApp/ /var/www/html/
+COPY web.config /var/www/
+COPY flags.txt /home/
+COPY s3cretP4g37888.html /var/www/html/
+# Expose port 80 for the web server
+EXPOSE 80
+
+# Start Apache in the foreground (needed for Docker)
+CMD ["apache2-foreground"]
